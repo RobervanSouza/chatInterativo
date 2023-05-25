@@ -14,21 +14,24 @@ const Header = ({setUserchat }) => {
   const [chatExiste] = useCollection(chat)
 
   const handleCreateChat = () => {
-     const inputEmail = prompt("escreva seu Email");
+    const inputEmail = prompt("Digite seu e-mail");
+    const inputName = prompt("Digite seu nome");
 
-     if (!inputEmail) return;
-     if (!EmailValidator.validate(inputEmail)){
+    if (!inputEmail || !inputName) return;
+    if (!EmailValidator.validate(inputEmail)) {
+      return alert("E-mail inválido!");
+    } else if (inputEmail === user.email) {
+      return alert("Insira um e-mail diferente do seu!");
+    } else if (chatJaExiste(inputEmail)) {
+      return alert("Chat já existe!");
+    }
 
-       return alert("email inválido!");
-     } else if (inputEmail === user.email) {
-       return alert("Insira um e-mail diferente do seu!");
-     } else if (chatJaExiste(inputEmail)) {
-       return alert("Chat já existe!");
-     }
     db.collection("chats").add({
       users: [ user.email, inputEmail ],
+      names: [ user.displayName, inputName ],
     });
-  }
+  };
+
 
   const chatJaExiste = (chatemail) =>{
     return !!chatExiste?.docs.find(

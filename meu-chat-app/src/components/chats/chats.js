@@ -6,30 +6,36 @@ import { useCollection } from "react-firebase-hooks/firestore";
 import ChatsItem from "../ChatsIte/chatItem";
 
 const Chats = ({ setUserChat, userChat }) => {
-
-
   const [ user ] = useAuthState(auth);
   const chat = db
     .collection("chats")
-    .where("users", "array-contains", user.email)
-  const [ emailLogado ] = useCollection(chat)
+    .where("users", "array-contains", user.email);
+  const [ emailLogado ] = useCollection(chat);
 
   return (
     <S.Container>
-      {emailLogado?.docs.map((item, index) => (
-        <S.Chats key={index} >
-          <ChatsItem 
-          id={item.id}
-          users={item.data().user}
-          user={user}
-          setUserChat={setUserChat}
-          active={userChat?.chatId === item.id ? "active" : ""} 
-          />
-          <S.Chatsdiv/>
-        </S.Chats> 
-      ))}
+      {emailLogado?.docs.map((item, index) => {
+        const users = item.data().users;
+        const emailCadastrado = users.find((email) => email !== user.email);
+       
+      
+
+        return (
+          <S.Chats key={index}>
+            <ChatsItem
+              id={item.id}
+              users={users}
+              user={user}
+              setUserChat={setUserChat}
+              active={userChat?.chatId === item.id ? "active" : ""}
+              userName={emailCadastrado} // Passar o email cadastrado como prop
+            />
+            <S.Chatsdiv />
+          </S.Chats>
+        );
+      })}
     </S.Container>
-  )
+  );
 }
 
 export default Chats;
