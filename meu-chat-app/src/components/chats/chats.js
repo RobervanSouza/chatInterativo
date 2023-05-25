@@ -17,6 +17,9 @@ const Chats = ({ setUserChat, userChat }) => {
       {emailLogado?.docs.map((item, index) => {
         const users = item.data().users;
         const emailCadastrado = users.find((email) => email !== user.email);
+        const name = item.data().names;
+        const nome = name.find((email) => email !== user.email);
+        console.log(name, "aqui esta o array de nomes")
        
       
 
