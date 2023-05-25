@@ -26,9 +26,15 @@ const Header = ({setUserchat }) => {
       return alert("Chat já existe!");
     }
 
+
+    const newUser = {
+      email: inputEmail,
+      name: inputName,
+    };
+
     db.collection("chats").add({
-      users: [ user.email, inputEmail ],
-      names: [ user.displayName, inputName ],
+      users: [ user.email,newUser.email ],
+      names: [ user.displayName, newUser.name],
     });
   };
 
