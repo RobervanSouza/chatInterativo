@@ -14,8 +14,10 @@ const Chats = ({ setUserChat, userChat }) => {
     <S.Container>
       {emailLogado?.docs.map((item, index) => {
         const users = item.data().users;
-        const emailCadastrado = users.find((email) => email !== user.email)?.email;
-        const names = item.data().users.map(user => user.name);
+        const emailCadastrado = users.find((user) => user.email !== user.email)?.email;
+
+        const names = item.data().users.map(user => user.name !== user.displayName ? user.name : null);
+
         const nome = names.find((name) => name !== user.displayName);
         console.log(names, "Aqui está a matriz de nomes");
 
